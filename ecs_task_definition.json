@@ -1,0 +1,57 @@
+[
+  {
+    "name": "video-detection-classifier",
+    "image": "636539472052.dkr.ecr.us-west-2.amazonaws.com/intel-video-pipeline:0.1.5d",
+    "resourceRequirements": [
+      {
+        "type": "GPU",
+        "value": "1"
+      }
+    ],
+    "command": [
+      "sh",
+      "/app/pipelines/crockpot/pipeline.sh"
+    ],
+    "environment": [
+      {
+        "name": "input_s3",
+        "value": "${input_s3}"
+      },
+      {
+        "name": "output_s3",
+        "value": "${output_s3}"
+      },
+      {
+        "name": "PGIE_CONFIG_FILE_PATH",
+        "value": "/app/pipelines/crockpot/${pipeline}/pgie_config.txt"
+      },
+      {
+        "name": "SGIE1_CONFIG_FILE_PATH",
+        "value": "/app/pipelines/crockpot/${pipeline}/sgie1_config.txt"
+      },
+      {
+        "name": "SGIE2_CONFIG_FILE_PATH",
+        "value": "/app/pipelines/crockpot/${pipeline}/sgie2_config.txt"
+      },
+      {
+        "name": "SGIE3_CONFIG_FILE_PATH",
+        "value": "/app/pipelines/crockpot/${pipeline}/sgie3_config.txt"
+      },
+      {
+        "name": "TRACKER_CONFIG_FILE_PATH",
+        "value": "/app/pipelines/crockpot/${pipeline}/tracker_config.txt"
+      }
+    ],
+    "cpu": 1,
+    "memory": 14000,
+    "essential": true,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${ecs_cluster_name}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "${application_prefix}-crockpot"
+      }
+    }
+  }
+]
